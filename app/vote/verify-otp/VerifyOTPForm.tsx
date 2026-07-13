@@ -20,12 +20,6 @@ export default function VerifyOTPForm() {
     }
   }, [contactValue, eventId, router])
 
-  useEffect(() => {
-    if (state?.success && state.redirectUrl) {
-      router.push(state.redirectUrl)
-    }
-  }, [state, router])
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6">
       <div className="glass-card p-6 sm:p-10 md:p-12 rounded-3xl w-full max-w-md space-y-6 sm:space-y-8 relative overflow-hidden">

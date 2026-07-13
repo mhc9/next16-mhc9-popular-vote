@@ -6,6 +6,7 @@ import { sendEmailOTP } from '@/lib/email'
 import { createSession } from '@/lib/session'
 import { z } from 'zod'
 import crypto from 'crypto'
+import { redirect } from 'next/navigation'
 
 const requestOtpSchema = z.object({
   contactMethod: z.enum(['sms', 'email']),
@@ -108,6 +109,7 @@ export async function requestOtpAction(prevState: any, formData: FormData) {
 }
 
 export async function verifyOtpAction(prevState: any, formData: FormData) {
+  let redirectPath = ''
   try {
     const contactMethod = formData.get('contactMethod') as string
     const contactValue = formData.get('contactValue') as string
@@ -170,9 +172,13 @@ export async function verifyOtpAction(prevState: any, formData: FormData) {
 
     await createSession(voter.id, contactValue)
 
-    return { success: true, redirectUrl: eventId ? `/vote/cast?eventId=${eventId}` : '/vote/cast' }
+    redirectPath = eventId ? `/vote/cast?eventId=${eventId}` : '/vote/cast'
   } catch (error) {
     console.error('Verify OTP Error:', error)
     return { error: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง' }
+  }
+
+  if (redirectPath) {
+    redirect(redirectPath)
   }
 }

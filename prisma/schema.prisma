@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Contestant {
+  id           String   @id
+  fullName     String
+  position     String
+  department   String
+  projectTitle String
+  projectDesc  String
+  photoUrl     String
+  voteCount    Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  Vote         Vote[]
+}
+
+model VoteEvent {
+  id        String   @id @default(cuid())
+  name      String
+  qrToken   String   @unique
+  startAt   DateTime
+  endAt     DateTime
+  isOpen    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  Vote      Vote[]
+}
+
+model Voter {
+  id                String            @id @default(cuid())
+  phoneNumber       String?           @unique
+  email             String?           @unique
+  isVerified        Boolean           @default(false)
+  deviceFingerprint String?
+  createdAt         DateTime          @default(now())
+  lastLoginAt       DateTime?
+  OtpVerification   OtpVerification[]
+  Vote              Vote[]
+}
+
+model OtpVerification {
+  id          String    @id @default(cuid())
+  voterId     String
+  otpCodeHash String
+  expiresAt   DateTime
+  attempts    Int       @default(0)
+  consumedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  voter       Voter     @relation(fields: [voterId], references: [id])
+}
+
+model Vote {
+  id           String     @id @default(cuid())
+  voteEventId  String
+  voterId      String
+  contestantId String
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime   @default(now())
+  event        VoteEvent  @relation(fields: [voteEventId], references: [id])
+  voter        Voter      @relation(fields: [voterId], references: [id])
+  contestant   Contestant @relation(fields: [contestantId], references: [id])
+
+  @@unique([voteEventId, voterId])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  name         String?
+  role         String   @default("ADMIN")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

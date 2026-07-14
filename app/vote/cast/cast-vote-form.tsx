@@ -2,7 +2,7 @@
 
 import { useState, useActionState } from 'react'
 import { castVoteAction } from '@/app/actions/vote'
-import { Send } from 'lucide-react'
+import { Send, CheckCircle, HeartHandshake } from 'lucide-react'
 
 type Contestant = {
   id: string
@@ -23,6 +23,29 @@ export default function CastVoteForm({
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [state, formAction, isPending] = useActionState(castVoteAction, null)
+
+  if (state?.success) {
+    return (
+      <div className="glass-card p-10 sm:p-16 rounded-[2.5rem] text-center space-y-6 border-green-500/30 !bg-green-500/5 max-w-2xl mx-auto shadow-[0_0_80px_-15px_rgba(34,197,94,0.3)] backdrop-blur-2xl overflow-hidden relative group">
+        <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+        <div className="relative">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-8 text-white shadow-[0_0_40px_rgba(34,197,94,0.5)] border-4 border-green-400/30">
+            <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 animate-[bounce_2s_infinite]" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600 mb-4">
+            VOTE CONFIRMED
+          </h2>
+          <p className="opacity-80 text-lg sm:text-xl flex flex-col items-center justify-center gap-3 font-medium">
+            ระบบได้รับการโหวตของคุณเรียบร้อยแล้ว
+            <span className="flex items-center justify-center gap-2 px-4 py-2 bg-green-500/10 rounded-full text-green-500 text-sm font-bold border border-green-500/20">
+              <HeartHandshake className="w-4 h-4" /> Thank You
+            </span>
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <form action={formAction} className="space-y-8 relative">

@@ -2,10 +2,8 @@
 
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
-import { redirect } from 'next/navigation'
 
 export async function castVoteAction(prevState: any, formData: FormData) {
-  let redirectUrl = ''
   try {
     const session = await getSession()
     if (!session) {
@@ -59,16 +57,9 @@ export async function castVoteAction(prevState: any, formData: FormData) {
       })
     })
 
-    redirectUrl = `/vote/cast?eventId=${eventId}`
+    return { success: true, message: 'บันทึกผลโหวตสำเร็จ ขอบคุณที่ร่วมสนุกครับ!' }
   } catch (error) {
-    if (error && typeof error === 'object' && 'digest' in error && typeof (error as any).digest === 'string' && (error as any).digest.startsWith('NEXT_REDIRECT')) {
-      throw error // Re-throw Next.js redirect
-    }
     console.error('Cast Vote Error:', error)
     return { error: 'เกิดข้อผิดพลาดในการบันทึกผลโหวต' }
-  }
-
-  if (redirectUrl) {
-    redirect(redirectUrl)
   }
 }

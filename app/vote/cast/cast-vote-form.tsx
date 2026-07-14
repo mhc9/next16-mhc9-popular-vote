@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useActionState } from 'react'
-import { castVoteAction } from '@/app/actions/vote'
+import { useState } from 'react'
 import { Send, CheckCircle, HeartHandshake } from 'lucide-react'
 
 type Contestant = {
@@ -22,9 +21,43 @@ export default function CastVoteForm({
   contestants: Contestant[]
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [state, formAction, isPending] = useActionState(castVoteAction, null)
+  const [isPending, setIsPending] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
-  if (state?.success) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedId || isPending) return
+
+    setIsPending(true)
+    setError(null)
+
+    try {
+      const res = await fetch('/api/vote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ eventId, contestantId: selectedId })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'เกิดข้อผิดพลาดในการบันทึกผลโหวต')
+      } else {
+        setSuccess(true)
+      }
+    } catch (err) {
+      console.error(err)
+      setError('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง')
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  if (success) {
     return (
       <div className="glass-card p-10 sm:p-16 rounded-[2.5rem] text-center space-y-6 border-green-500/30 !bg-green-500/5 max-w-2xl mx-auto shadow-[0_0_80px_-15px_rgba(34,197,94,0.3)] backdrop-blur-2xl overflow-hidden relative group">
         <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -48,14 +81,14 @@ export default function CastVoteForm({
   }
 
   return (
-    <form action={formAction} className="space-y-8 relative">
+    <form onSubmit={handleSubmit} className="space-y-8 relative">
       <input type="hidden" name="eventId" value={eventId} />
       <input type="hidden" name="contestantId" value={selectedId || ''} />
 
-      {state?.error && (
+      {error && (
         <div className="p-4 bg-red-500/10 border border-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.2)] text-red-500 rounded-2xl text-center font-bold max-w-2xl mx-auto flex items-center justify-center gap-2">
           <div className="w-2 h-2 rounded-full bg-red-500 animate-ping"></div>
-          {state.error}
+          {error}
         </div>
       )}
 

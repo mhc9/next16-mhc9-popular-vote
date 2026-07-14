@@ -26,7 +26,6 @@ export async function decrypt(session: string | undefined = '') {
     })
     return payload as SessionPayload
   } catch (error) {
-    console.error('[decrypt] failed:', error)
     return null
   }
 }
@@ -39,9 +38,11 @@ export async function createSession(voterId: string, phoneNumber: string) {
   const cookieStore = await cookies()
   cookieStore.set('session', session, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // Fix: Only use secure cookies if explicitly enabled, because testing/deploying on HTTP 
+    // (like an intranet IP) with NODE_ENV=production causes the browser to reject the cookie!
+    secure: process.env.HTTPS_ENABLED === 'true',
     expires: expiresAt,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite: 'lax',
     path: '/',
   })
 }
@@ -58,9 +59,9 @@ export async function updateSession() {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
   cookieStore.set('session', session, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.HTTPS_ENABLED === 'true',
     expires: expiresAt,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite: 'lax',
     path: '/',
   })
   
@@ -72,13 +73,11 @@ export async function getSession() {
   const session = cookieStore.get('session')?.value
   
   if (!session) {
-    console.log('[getSession] raw cookie is MISSING or EMPTY')
     return null
   }
   
   const decrypted = await decrypt(session)
   if (!decrypted) {
-    console.log('[getSession] decrypt failed for cookie:', session)
     return null
   }
   

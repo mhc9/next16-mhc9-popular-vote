@@ -4,8 +4,6 @@ import { getSession } from '@/lib/session'
 
 export async function POST(request: Request) {
   try {
-    console.log('[API POST] Headers:', Object.fromEntries(request.headers.entries()))
-    
     // First try Authorization header (Bearer token passed explicitly)
     const authHeader = request.headers.get('authorization')
     let session = null

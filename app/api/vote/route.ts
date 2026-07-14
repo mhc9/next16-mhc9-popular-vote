@@ -4,7 +4,23 @@ import { getSession } from '@/lib/session'
 
 export async function POST(request: Request) {
   try {
-    const session = await getSession()
+    console.log('[API POST] Headers:', Object.fromEntries(request.headers.entries()))
+    
+    // First try Authorization header (Bearer token passed explicitly)
+    const authHeader = request.headers.get('authorization')
+    let session = null
+    
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7)
+      const { decrypt } = await import('@/lib/session')
+      session = await decrypt(token)
+    } 
+    
+    // Fallback to standard cookie reading
+    if (!session) {
+      session = await getSession()
+    }
+
     if (!session) {
       return NextResponse.json({ error: 'กรุณาเข้าสู่ระบบก่อนโหวต' }, { status: 401 })
     }

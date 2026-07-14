@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
 import { redirect } from 'next/navigation'
@@ -10,6 +11,9 @@ export default async function CastVotePage({
   searchParams: Promise<{ eventId?: string }>
 }) {
   const session = await getSession()
+  const cookieStore = await cookies()
+  const token = cookieStore.get('session')?.value || ''
+  
   const resolvedParams = await searchParams
   const eventId = resolvedParams.eventId
 
@@ -116,7 +120,7 @@ export default async function CastVotePage({
             </div>
           </div>
         ) : (
-          <CastVoteForm eventId={eventId} contestants={contestants} />
+          <CastVoteForm eventId={eventId} contestants={contestants} token={token} />
         )}
       </div>
     </main>

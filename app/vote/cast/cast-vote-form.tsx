@@ -15,10 +15,12 @@ type Contestant = {
 
 export default function CastVoteForm({
   eventId,
-  contestants
+  contestants,
+  token
 }: {
   eventId: string
   contestants: Contestant[]
+  token: string
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [isPending, setIsPending] = useState(false)
@@ -37,6 +39,7 @@ export default function CastVoteForm({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         credentials: 'include',
         body: JSON.stringify({ eventId, contestantId: selectedId })

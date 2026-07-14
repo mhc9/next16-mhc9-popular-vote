@@ -11,6 +11,12 @@ const encodedAdminKey = new TextEncoder().encode(adminSecretKey)
 export async function middleware(request: NextRequest) {
   // 1. Check Voter Session for /vote/cast
   if (request.nextUrl.pathname.startsWith('/vote/cast')) {
+    // Bypass middleware for Server Actions (POST requests). 
+    // The Server Action (castVoteAction) performs its own session validation via getSession().
+    if (request.method === 'POST' || request.headers.has('next-action')) {
+      return NextResponse.next()
+    }
+
     const session = request.cookies.get('session')?.value
     if (!session) {
       const url = new URL('/vote/register', request.url)

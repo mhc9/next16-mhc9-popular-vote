@@ -54,3 +54,5 @@ ecosystem.config.js
 .codex/
 .github/
 skills-lock.json
+
+dev.db

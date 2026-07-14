@@ -26,6 +26,7 @@ export async function decrypt(session: string | undefined = '') {
     })
     return payload as SessionPayload
   } catch (error) {
+    console.error('[decrypt] failed:', error)
     return null
   }
 }
@@ -69,8 +70,19 @@ export async function updateSession() {
 export async function getSession() {
   const cookieStore = await cookies()
   const session = cookieStore.get('session')?.value
-  if (!session) return null
-  return await decrypt(session)
+  
+  if (!session) {
+    console.log('[getSession] raw cookie is MISSING or EMPTY')
+    return null
+  }
+  
+  const decrypted = await decrypt(session)
+  if (!decrypted) {
+    console.log('[getSession] decrypt failed for cookie:', session)
+    return null
+  }
+  
+  return decrypted
 }
 
 export async function deleteSession() {

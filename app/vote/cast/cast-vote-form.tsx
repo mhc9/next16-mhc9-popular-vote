@@ -24,14 +24,7 @@ export default function CastVoteForm({
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [state, formAction, isPending] = useActionState(castVoteAction, null)
 
-  useEffect(() => {
-    if (state?.success) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
-    }
-  }, [state])
+
 
   return (
     <form action={formAction} className="space-y-8 relative">

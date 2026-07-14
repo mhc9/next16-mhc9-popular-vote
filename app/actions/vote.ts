@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
+import { revalidatePath } from 'next/cache'
 
 export async function castVoteAction(prevState: any, formData: FormData) {
   try {
@@ -56,6 +57,8 @@ export async function castVoteAction(prevState: any, formData: FormData) {
         data: { voteCount: { increment: 1 } }
       })
     })
+
+    revalidatePath('/vote/cast')
 
     return { success: true, message: 'บันทึกผลโหวตสำเร็จ ขอบคุณที่ร่วมสนุกครับ!' }
   } catch (error) {

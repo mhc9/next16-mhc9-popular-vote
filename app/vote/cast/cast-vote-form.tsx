@@ -24,8 +24,6 @@ export default function CastVoteForm({
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [state, formAction, isPending] = useActionState(castVoteAction, null)
 
-
-
   return (
     <form action={formAction} className="space-y-8 relative">
       <input type="hidden" name="eventId" value={eventId} />

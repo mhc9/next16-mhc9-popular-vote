@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useActionState, useEffect } from 'react'
+import { useState, useActionState } from 'react'
 import { castVoteAction } from '@/app/actions/vote'
 import { Send } from 'lucide-react'
 
@@ -36,12 +36,6 @@ export default function CastVoteForm({
         </div>
       )}
 
-      {state?.success && (
-        <div className="p-4 bg-green-500/10 border border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.2)] text-green-500 rounded-2xl text-center font-bold text-lg max-w-2xl mx-auto flex items-center justify-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
-          {state.message}
-        </div>
-      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 relative z-10">
         {contestants.map((c) => {
@@ -49,7 +43,7 @@ export default function CastVoteForm({
           return (
             <div
               key={c.id}
-              className={`relative transition-all duration-500 h-full ${state?.success ? 'pointer-events-none opacity-40 grayscale-[50%]' : ''
+              className={`relative transition-all duration-500 h-full ${isPending ? 'pointer-events-none opacity-70 grayscale-[30%]' : ''
                 } ${isSelected ? 'scale-[1.03] z-20' : 'hover:scale-[1.01] hover:z-10'}`}
             >
               {/* Selected Indicator Badge (Moved outside overflow-hidden) */}
@@ -65,7 +59,7 @@ export default function CastVoteForm({
               )}
 
               <div
-                onClick={() => !state?.success && setSelectedId(c.id)}
+                onClick={() => !isPending && setSelectedId(c.id)}
                 className="group relative rounded-[2rem] cursor-pointer overflow-hidden h-full block"
               >
                 {/* Animated Glowing Border Background */}
@@ -143,14 +137,14 @@ export default function CastVoteForm({
       <div className="fixed bottom-0 left-0 right-0 p-6 glass-card border-t border-white/10 rounded-t-[2.5rem] z-50 flex justify-center backdrop-blur-2xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)]">
         <div className="w-full max-w-2xl relative">
           {/* Animated glow behind button */}
-          {selectedId && !state?.success && (
+          {selectedId && !isPending && (
             <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary blur-xl opacity-30 rounded-2xl animate-pulse"></div>
           )}
 
           <button
             type="submit"
-            disabled={!selectedId || isPending || state?.success}
-            className={`w-full py-5 rounded-2xl font-black text-lg sm:text-xl tracking-wider uppercase transition-all duration-500 flex justify-center items-center gap-3 relative z-10 ${!selectedId || state?.success
+            disabled={!selectedId || isPending}
+            className={`w-full py-5 rounded-2xl font-black text-lg sm:text-xl tracking-wider uppercase transition-all duration-500 flex justify-center items-center gap-3 relative z-10 ${!selectedId
               ? 'bg-foreground/10 text-foreground/40 border border-foreground/10 cursor-not-allowed'
               : 'bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] text-white shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:shadow-[0_0_50px_rgba(139,92,246,0.5)] hover:animate-[gradient_2s_linear_infinite] border border-white/20 active:scale-95'
               }`}
@@ -158,17 +152,15 @@ export default function CastVoteForm({
             {isPending ? (
               <span className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin"></span>
             ) : null}
-            {state?.success
-              ? 'VOTE REGISTERED'
-              : isPending
-                ? 'PROCESSING...'
-                : selectedId
-                  ? (
-                    <>
-                      CONFIRM VOTE <Send className="w-5 h-5 ml-1 animate-pulse" />
-                    </>
-                  )
-                  : 'SELECT YOUR CANDIDATE'
+            {isPending
+              ? 'PROCESSING...'
+              : selectedId
+                ? (
+                  <>
+                    CONFIRM VOTE <Send className="w-5 h-5 ml-1 animate-pulse" />
+                  </>
+                )
+                : 'SELECT YOUR CANDIDATE'
             }
           </button>
         </div>

@@ -13,7 +13,7 @@ export default async function ResultsPage() {
   const maxVotes = topContestants.length > 0 ? Math.max(topContestants[0].voteCount, 1) : 1
 
   return (
-    <main className="min-h-screen p-4 sm:p-6 pb-24 max-w-4xl mx-auto space-y-6 sm:space-y-8">
+    <main className="min-h-screen p-4 pt-20 sm:p-6 sm:pt-8 pb-24 max-w-4xl mx-auto space-y-6 sm:space-y-8">
       <header className="py-4 sm:py-6 text-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary flex items-center justify-center gap-3">
           <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500" />

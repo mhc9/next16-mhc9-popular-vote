@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Users, LayoutDashboard, LogOut, Shield, ChevronRight, Target } from 'lucide-react'
+import { BrandLogo } from '@/components/brand-logo'
 import { logoutAdminAction } from '@/app/actions/admin-auth'
 
 const navigation = [
   { name: 'ภาพรวม (Dashboard)', href: '/admin', icon: LayoutDashboard },
-  { name: 'ผู้เข้าแข่งขัน', href: '/admin/contestants', icon: Users },
   { name: 'กิจกรรม', href: '/admin/events', icon: Target },
+  { name: 'ผู้เข้าแข่งขัน', href: '/admin/contestants', icon: Users },
 ]
 
 export function AdminSidebar({ username }: { username: string }) {
@@ -16,13 +17,11 @@ export function AdminSidebar({ username }: { username: string }) {
 
   return (
     <aside className="hidden md:flex w-72 flex-col h-screen sticky top-0 bg-white/40 dark:bg-black/20 backdrop-blur-2xl border-r border-white/20 dark:border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30">
-      
+
       {/* Brand / Logo Area */}
       <div className="p-8">
         <Link href="/admin" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg group-hover:shadow-primary/25 transition-all duration-300">
-            <Shield className="w-5 h-5 text-white" />
-          </div>
+          <BrandLogo size={40} />
           <div>
             <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
               MHC9 Admin
@@ -44,8 +43,8 @@ export function AdminSidebar({ username }: { username: string }) {
               href={item.href}
               className={`
                 group flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300
-                ${isActive 
-                  ? 'bg-white/60 dark:bg-white/10 shadow-sm border border-white/40 dark:border-white/10 text-primary' 
+                ${isActive
+                  ? 'bg-white/60 dark:bg-white/10 shadow-sm border border-white/40 dark:border-white/10 text-primary'
                   : 'text-foreground/70 hover:bg-white/40 dark:hover:bg-white/5 hover:text-foreground hover:shadow-sm'
                 }
               `}
@@ -53,8 +52,8 @@ export function AdminSidebar({ username }: { username: string }) {
               <div className="flex items-center gap-3.5">
                 <div className={`
                   flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-300
-                  ${isActive 
-                    ? 'bg-primary text-white shadow-md shadow-primary/20' 
+                  ${isActive
+                    ? 'bg-primary text-white shadow-md shadow-primary/20'
                     : 'bg-foreground/5 text-foreground/60 group-hover:bg-foreground/10 group-hover:text-foreground'
                   }
                 `}>
@@ -64,7 +63,7 @@ export function AdminSidebar({ username }: { username: string }) {
                   {item.name}
                 </span>
               </div>
-              
+
               {isActive && (
                 <ChevronRight className="w-4 h-4 text-primary animate-in fade-in slide-in-from-left-2" />
               )}
@@ -87,11 +86,11 @@ export function AdminSidebar({ username }: { username: string }) {
               <p className="text-xs text-foreground/50 truncate">Administrator</p>
             </div>
           </div>
-          
+
           <div className="h-px w-full bg-border/50 my-2"></div>
-          
+
           <form action={logoutAdminAction}>
-            <button 
+            <button
               type="submit"
               className="group flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-2xl text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 font-medium text-sm"
             >

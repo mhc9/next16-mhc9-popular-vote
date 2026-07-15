@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Users, LayoutDashboard, LogOut, Menu, X, Shield, Target } from 'lucide-react'
+import { BrandLogo } from '@/components/brand-logo'
 import { logoutAdminAction } from '@/app/actions/admin-auth'
 
 const navigation = [
@@ -20,9 +21,7 @@ export function AdminMobileHeader({ username }: { username: string }) {
     <>
       <div className="md:hidden flex items-center justify-between p-4 bg-white/70 dark:bg-black/40 backdrop-blur-xl border-b border-white/20 dark:border-white/10 sticky top-0 z-50 shadow-sm">
         <Link href="/admin" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
-            <Shield className="w-4 h-4 text-white" />
-          </div>
+          <BrandLogo size={32} />
           <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
             MHC9 Admin
           </span>

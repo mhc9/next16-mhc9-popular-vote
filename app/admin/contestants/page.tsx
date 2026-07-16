@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 export default async function AdminContestantsPage() {
   const contestants = await prisma.contestant.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: { id: 'desc' }
   })
 
   return (
@@ -63,14 +63,13 @@ export default async function AdminContestantsPage() {
                   <tr key={c.id} className="group hover:bg-primary/5 transition-all duration-300">
                     <td className="p-5">
                       <div className="w-12 h-12 rounded-2xl overflow-hidden bg-primary/10 border border-primary/20 relative shadow-sm group-hover:scale-105 transition-transform duration-300">
-                        {/* <Image
+                        <Image
                           src={c.photoUrl}
                           alt={c.fullName}
+                          width={100}
+                          height={100}
                           className="object-cover w-full h-full"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = `https://api.dicebear.com/7.x/initials/svg?seed=${c.fullName}`
-                          }}
-                        /> */}
+                        />
                       </div>
                     </td>
                     <td className="p-5 font-mono text-sm font-bold text-foreground/70">{c.id}</td>

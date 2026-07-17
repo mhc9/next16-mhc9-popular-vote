@@ -38,50 +38,50 @@ export default async function Home() {
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary pb-2 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 drop-shadow-[0_0_20px_rgba(0,246,255,0.4)] w-full">
               <Sparkles className="w-8 h-8 sm:w-12 sm:h-12 text-primary animate-pulse drop-shadow-[0_0_10px_rgba(0,246,255,1)]" />
-              ระบบ Popular Vote
+              MHC9 Popular Vote
             </h1>
             <p className="text-sm sm:text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed px-2 mt-2 sm:mt-4">
-              ร่วมโหวตและเป็นส่วนหนึ่งในการตัดสินสุดยอดผลงานนวัตกรรม<br className="hidden sm:block" />
-              ที่สร้างสรรค์โดยบุคลากรของเรา
+              ร่วมโหวตและเป็นส่วนหนึ่งในการตัดสินสุดยอดผลงาน<br className="hidden sm:block" />
+              นวัตกรรมสุขภาพจิต เขตสุขภาพที่ 9
             </p>
 
-          <div className="mt-8 sm:mt-12 max-w-md mx-auto space-y-4 sm:space-y-6 relative z-10">
-            <h2 className="text-xl font-bold font-mono tracking-widest text-white/90 flex items-center justify-center gap-2 uppercase">
-              <Trophy className="w-5 h-5 text-secondary drop-shadow-[0_0_10px_rgba(176,38,255,0.8)]" />
-              Active Sessions
-            </h2>
-            {events.length === 0 ? (
-              <div className="p-8 rounded-none bg-black/40 border border-primary/20 flex flex-col items-center gap-3 shadow-[inset_0_0_20px_rgba(0,246,255,0.05)]">
-                <Inbox className="w-10 h-10 text-primary/40" />
-                <p className="font-mono text-sm text-primary/70 tracking-widest uppercase">No Active Sessions</p>
-              </div>
-            ) : (
-              <div className="grid gap-4">
-                {events.map(event => (
-                  <Link
-                    href={`/vote/${event.qrToken}`}
-                    key={event.id}
-                    className="group flex items-center justify-between p-4 sm:p-5 rounded-none bg-black/60 border border-white/10 hover:border-primary/50 transition-all hover:shadow-[0_0_30px_rgba(0,246,255,0.2)] hover:bg-primary/5 active:scale-95 text-left relative overflow-hidden"
-                  >
-                    {/* Hover scanline */}
-                    <div className="absolute inset-0 w-full h-[2px] bg-primary/50 blur-[2px] -translate-y-full group-hover:animate-[scanline_2s_linear_infinite]"></div>
+            <div className="mt-8 sm:mt-12 max-w-md mx-auto space-y-4 sm:space-y-6 relative z-10">
+              <h2 className="text-xl font-bold font-mono tracking-widest text-white/90 flex items-center justify-center gap-2 uppercase">
+                <Trophy className="w-5 h-5 text-secondary drop-shadow-[0_0_10px_rgba(176,38,255,0.8)]" />
+                Active Sessions
+              </h2>
+              {events.length === 0 ? (
+                <div className="p-8 rounded-none bg-black/40 border border-primary/20 flex flex-col items-center gap-3 shadow-[inset_0_0_20px_rgba(0,246,255,0.05)]">
+                  <Inbox className="w-10 h-10 text-primary/40" />
+                  <p className="font-mono text-sm text-primary/70 tracking-widest uppercase">No Active Sessions</p>
+                </div>
+              ) : (
+                <div className="grid gap-4">
+                  {events.map(event => (
+                    <Link
+                      href={`/vote/${event.qrToken}`}
+                      key={event.id}
+                      className="group flex items-center justify-between p-4 sm:p-5 rounded-none bg-black/60 border border-white/10 hover:border-primary/50 transition-all hover:shadow-[0_0_30px_rgba(0,246,255,0.2)] hover:bg-primary/5 active:scale-95 text-left relative overflow-hidden"
+                    >
+                      {/* Hover scanline */}
+                      <div className="absolute inset-0 w-full h-[2px] bg-primary/50 blur-[2px] -translate-y-full group-hover:animate-[scanline_2s_linear_infinite]"></div>
 
-                    <div className="relative z-10 w-full pr-2">
-                      <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.2em] text-primary/70 mb-1">EVENT_ID: {event.id.substring(event.id.length - 8).toUpperCase()}</div>
-                      <h3 className="text-base sm:text-xl font-black group-hover:text-primary transition-colors leading-tight">{event.name}</h3>
-                      <p className="text-[10px] sm:text-sm font-mono opacity-60 mt-1.5 sm:mt-2 flex items-center gap-1.5 sm:gap-2">
-                        <CalendarDays className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
-                        <span className="truncate">ปิดโหวตวันที่ {new Date(event.endAt).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                      </p>
-                    </div>
-                    <div className="w-10 h-10 border border-white/20 bg-black flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:text-primary transition-all shrink-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
-                      <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+                      <div className="relative z-10 w-full pr-2">
+                        <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.2em] text-primary/70 mb-1">EVENT_ID: {event.id.substring(event.id.length - 8).toUpperCase()}</div>
+                        <h3 className="text-base sm:text-xl font-black group-hover:text-primary transition-colors leading-tight">{event.name}</h3>
+                        <p className="text-[10px] sm:text-sm font-mono opacity-60 mt-1.5 sm:mt-2 flex items-center gap-1.5 sm:gap-2">
+                          <CalendarDays className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
+                          <span className="truncate">ปิดโหวตวันที่ {new Date(event.endAt).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                        </p>
+                      </div>
+                      <div className="w-10 h-10 border border-white/20 bg-black flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:text-primary transition-all shrink-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
+                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

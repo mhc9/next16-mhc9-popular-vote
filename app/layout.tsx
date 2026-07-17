@@ -12,8 +12,8 @@ const prompt = Prompt({
 });
 
 export const metadata: Metadata = {
-  title: "ระบบ Popular Vote",
-  description: "ระบบโหวตผลงานนวัตกรรม",
+  title: "MHC9 Popular Vote",
+  description: "ระบบโหวตผลงานนวัตกรรมสุขภาพจิต เขตสุขภาพที่ 9",
 };
 
 export default function RootLayout({

@@ -62,15 +62,18 @@ export async function requestOtpAction(prevState: any, formData: FormData) {
     if (voter) {
       // Check Rate Limit (max 3 times in 15 minutes)
       const fifteenMinsAgo = new Date(Date.now() - 15 * 60 * 1000)
-      const recentRequests = await prisma.otpVerification.count({
+      const recentRequests = await prisma.otpVerification.findMany({
         where: {
           voterId: voter.id,
           createdAt: { gte: fifteenMinsAgo }
-        }
+        },
+        orderBy: { createdAt: 'asc' }
       })
 
-      if (recentRequests >= 3) {
-        return { error: 'คุณขอรหัส OTP บ่อยเกินไป กรุณารอ 15 นาที' }
+      if (recentRequests.length >= 3) {
+        // The user must wait 15 minutes after the oldest of these 3 recent requests
+        const retryTime = new Date(recentRequests[0].createdAt.getTime() + 15 * 60 * 1000)
+        return { error: 'คุณขอรหัส OTP เกิน 3 ครั้ง กรุณารอ', retryAfter: retryTime.toISOString() }
       }
     } else {
       voter = await prisma.voter.create({

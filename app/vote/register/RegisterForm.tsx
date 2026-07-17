@@ -13,12 +13,32 @@ export default function RegisterForm() {
   const eventId = searchParams.get('eventId') || ''
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const [contactMethod, setContactMethod] = useState<'sms' | 'email'>('email')
+  const [countdown, setCountdown] = useState<number | null>(null)
 
   useEffect(() => {
     if (state?.success && state.contactValue && state.contactMethod) {
       router.push(`/vote/verify-otp?contactMethod=${state.contactMethod}&contactValue=${state.contactValue}&eventId=${eventId}`)
     }
   }, [state, router, eventId])
+
+  useEffect(() => {
+    if (state?.retryAfter) {
+      const targetTime = new Date(state.retryAfter).getTime()
+      
+      const updateCountdown = () => {
+        const now = Date.now()
+        const diff = Math.max(0, Math.floor((targetTime - now) / 1000))
+        setCountdown(diff)
+      }
+      
+      updateCountdown()
+      const interval = setInterval(updateCountdown, 1000)
+      
+      return () => clearInterval(interval)
+    } else {
+      setCountdown(null)
+    }
+  }, [state?.retryAfter])
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6">
@@ -88,12 +108,17 @@ export default function RegisterForm() {
           {state?.error && (
             <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl text-sm text-center">
               {state.error}
+              {countdown !== null && countdown > 0 && (
+                <div className="mt-1.5 font-mono font-bold text-xl drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">
+                  {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')} นาที
+                </div>
+              )}
             </div>
           )}
 
           <button
             type="submit"
-            disabled={isPending || !captchaToken}
+            disabled={isPending || !captchaToken || (countdown !== null && countdown > 0)}
             className="btn-primary w-full py-3.5 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-lg flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed active:scale-95"
           >
             {isPending ? (

@@ -105,7 +105,7 @@ export default function RegisterForm() {
             />
           </div>
 
-          {state?.error && (
+          {state?.error && countdown !== 0 && (
             <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl text-sm text-center">
               {state.error}
               {countdown !== null && countdown > 0 && (

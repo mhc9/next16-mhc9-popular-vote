@@ -46,12 +46,12 @@ export default async function Home() {
             </p>
 
             <div className="mt-8 sm:mt-12 max-w-md mx-auto space-y-4 sm:space-y-6 relative z-10">
-              <h2 className="text-xl font-bold font-mono tracking-widest text-white/90 flex items-center justify-center gap-2 uppercase">
+              <h2 className="text-xl font-bold font-mono tracking-widest text-foreground/90 dark:text-white/90 flex items-center justify-center gap-2 uppercase">
                 <Trophy className="w-5 h-5 text-secondary drop-shadow-[0_0_10px_rgba(176,38,255,0.8)]" />
                 Active Sessions
               </h2>
               {events.length === 0 ? (
-                <div className="p-8 rounded-none bg-black/40 border border-primary/20 flex flex-col items-center gap-3 shadow-[inset_0_0_20px_rgba(0,246,255,0.05)]">
+                <div className="p-8 rounded-none bg-black/5 dark:bg-black/40 border border-primary/20 flex flex-col items-center gap-3 shadow-[inset_0_0_20px_rgba(14,165,233,0.05)] dark:shadow-[inset_0_0_20px_rgba(0,246,255,0.05)]">
                   <Inbox className="w-10 h-10 text-primary/40" />
                   <p className="font-mono text-sm text-primary/70 tracking-widest uppercase">No Active Sessions</p>
                 </div>
@@ -61,21 +61,21 @@ export default async function Home() {
                     <Link
                       href={`/vote/${event.qrToken}`}
                       key={event.id}
-                      className="group flex items-center justify-between p-4 sm:p-5 rounded-none bg-black/60 border border-white/10 hover:border-primary/50 transition-all hover:shadow-[0_0_30px_rgba(0,246,255,0.2)] hover:bg-primary/5 active:scale-95 text-left relative overflow-hidden"
+                      className="group flex items-center justify-between p-4 sm:p-5 rounded-none bg-white/60 dark:bg-black/60 border border-black/10 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 transition-all hover:shadow-[0_0_30px_rgba(14,165,233,0.2)] dark:hover:shadow-[0_0_30px_rgba(0,246,255,0.2)] hover:bg-primary/5 active:scale-95 text-left relative overflow-hidden"
                     >
                       {/* Hover scanline */}
                       <div className="absolute inset-0 w-full h-[2px] bg-primary/50 blur-[2px] -translate-y-full group-hover:animate-[scanline_2s_linear_infinite]"></div>
 
                       <div className="relative z-10 w-full pr-2">
                         <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.2em] text-primary/70 mb-1">EVENT_ID: {event.id.substring(event.id.length - 8).toUpperCase()}</div>
-                        <h3 className="text-base sm:text-xl font-black group-hover:text-primary transition-colors leading-tight">{event.name}</h3>
-                        <p className="text-[10px] sm:text-sm font-mono opacity-60 mt-1.5 sm:mt-2 flex items-center gap-1.5 sm:gap-2">
+                        <h3 className="text-base sm:text-xl font-black text-foreground dark:text-white group-hover:text-primary dark:group-hover:text-primary transition-colors leading-tight">{event.name}</h3>
+                        <p className="text-[10px] sm:text-sm font-mono mt-1.5 sm:mt-2 flex items-center gap-1.5 sm:gap-2 text-foreground/70 dark:text-white/60">
                           <CalendarDays className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
                           <span className="truncate">ปิดโหวตวันที่ {new Date(event.endAt).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                         </p>
                       </div>
-                      <div className="w-10 h-10 border border-white/20 bg-black flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:text-primary transition-all shrink-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
-                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      <div className="w-10 h-10 border border-black/10 dark:border-white/20 bg-white/80 dark:bg-black flex items-center justify-center group-hover:border-primary dark:group-hover:border-primary group-hover:bg-primary/10 dark:group-hover:bg-primary/20 group-hover:text-primary transition-all shrink-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
+                        <ChevronRight className="w-5 h-5 text-foreground/50 dark:text-white/60 group-hover:text-primary group-hover:translate-x-1 transition-transform" />
                       </div>
                     </Link>
                   ))}
